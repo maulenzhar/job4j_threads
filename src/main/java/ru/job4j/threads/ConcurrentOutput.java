@@ -7,6 +7,8 @@ public class ConcurrentOutput {
         );
         another.start();
 
+        another.run(); /*run не дает указания выполнить свои операторы в отдельной нити*/
+
         Thread second = new Thread(
                 () -> System.out.println(Thread.currentThread().getName())
         );
