@@ -1,18 +1,17 @@
 package ru.job4j.threads.hw;
 
 public class ConsoleProgress implements Runnable {
-    char[] process = new char[] {'-', '\\', '|', '/'};
-
     @Override
     public void run() {
-        for (int i = 0; i < process.length; i++) {
-            try {
-                Thread.sleep(500);
-                if (!Thread.currentThread().isInterrupted()) {
-                    System.out.print("\r load: " + process[i]);
+        while (!Thread.currentThread().isInterrupted()) {
+            char[] process = new char[] {'-', '\\', '|', '/'};
+            for (char proc : process) {
+                try {
+                    Thread.sleep(500);
+                    System.out.print("\r load: " + proc);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
                 }
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
             }
         }
     }
