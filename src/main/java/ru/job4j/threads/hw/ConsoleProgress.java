@@ -3,8 +3,8 @@ package ru.job4j.threads.hw;
 public class ConsoleProgress implements Runnable {
     @Override
     public void run() {
+        char[] process = new char[] {'-', '\\', '|', '/'};
         while (!Thread.currentThread().isInterrupted()) {
-            char[] process = new char[] {'-', '\\', '|', '/'};
             for (char proc : process) {
                 try {
                     Thread.sleep(500);
