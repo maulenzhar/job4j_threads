@@ -8,35 +8,42 @@ import java.net.URL;
 public class Wget implements Runnable {
     private final String url;
     private final int speed;
+    private final String fileName;
 
-    public Wget(String url, int speed) {
+    public Wget(String url, int speed, String fileName) {
         this.url = url;
         this.speed = speed;
+        this.fileName = fileName;
     }
 
     @Override
     public void run() {
         var startAt = System.currentTimeMillis();
-        var file = new File("tmp-test.xml");
+        var file = new File(fileName);
         String url = this.url;
         try (var in = new URL(url).openStream();
              var out = new FileOutputStream(file)) {
             System.out.println("Open connection: " + (System.currentTimeMillis() - startAt) + " ms");
-            var dataBuffer = new byte[512];
+            var dataBuffer = new byte[speed];
             int bytesRead;
+            double countBytesRead = 0;
+            var downloadAt = System.nanoTime();
             while ((bytesRead = in.read(dataBuffer, 0, dataBuffer.length)) != -1) {
-                var downloadAt = System.nanoTime();
                 out.write(dataBuffer, 0, bytesRead);
-                var expectedSpeed = System.nanoTime() - downloadAt;
-                var byteInMilliSec = (512 * 1000000) / expectedSpeed;
-                var res = byteInMilliSec / speed;
-                if (res > 0) {
-                    Thread.sleep(res);
+                countBytesRead += bytesRead;
+                long ns = System.nanoTime() - downloadAt;
+                var byteInMs = (countBytesRead / ns) * 1000000;
+                if (countBytesRead > byteInMs) {
+                    var res = byteInMs / speed;
+                    Thread.sleep((long) res);
                 }
-                System.out.println("Read 512 bytes : " + (System.nanoTime() - downloadAt) + " nano.");
+
+                System.out.println("Read " + countBytesRead + " bytes : " + (System.nanoTime() - downloadAt) + " ns");
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -46,7 +53,8 @@ public class Wget implements Runnable {
         }
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
-        Thread wget = new Thread(new Wget(url, speed));
+        String fileName = args[2];
+        Thread wget = new Thread(new Wget(url, speed, fileName));
         wget.start();
         wget.join();
     }
