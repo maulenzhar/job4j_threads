@@ -27,13 +27,13 @@ public class Wget implements Runnable {
             var dataBuffer = new byte[speed];
             int bytesRead;
             double countBytesRead = 0;
-            var downloadAt = System.nanoTime();
+            var downloadAt = System.currentTimeMillis();
             while ((bytesRead = in.read(dataBuffer, 0, dataBuffer.length)) != -1) {
                 out.write(dataBuffer, 0, bytesRead);
                 countBytesRead += bytesRead;
-                long ns = System.nanoTime() - downloadAt;
-                var byteInMs = (countBytesRead / ns) * 1000000;
-                if (countBytesRead > byteInMs) {
+                if (countBytesRead > speed) {
+                    long ms = System.currentTimeMillis() - downloadAt;
+                    var byteInMs = countBytesRead / ms;
                     var res = byteInMs / speed;
                     Thread.sleep((long) res);
                 }
