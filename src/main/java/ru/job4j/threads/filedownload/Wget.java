@@ -33,12 +33,14 @@ public class Wget implements Runnable {
                 countBytesRead += bytesRead;
                 if (countBytesRead > speed) {
                     long ms = System.currentTimeMillis() - downloadAt;
-                    var byteInMs = countBytesRead / ms;
-                    var res = byteInMs / speed;
-                    Thread.sleep((long) res);
+                    if (ms < 1000) {
+                        Thread.sleep(1000 - ms);
+                    }
                 }
-
-                System.out.println("Read " + countBytesRead + " bytes : " + (System.nanoTime() - downloadAt) + " ns");
+                var ms = System.currentTimeMillis() - downloadAt;
+                System.out.println("Read " + countBytesRead + " bytes : " + ms + " ms.");
+                countBytesRead = 0;
+                downloadAt = System.currentTimeMillis();
             }
         } catch (IOException e) {
             e.printStackTrace();
