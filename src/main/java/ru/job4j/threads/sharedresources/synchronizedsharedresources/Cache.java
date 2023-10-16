@@ -1,4 +1,4 @@
-package ru.job4j.threads.shared_resources.synchronized_shared_resources;
+package ru.job4j.threads.sharedresources.synchronizedsharedresources;
 
 public final class Cache {
     private static Cache cache;
@@ -9,4 +9,5 @@ public final class Cache {
         }
         return cache;
     }
+
 }
