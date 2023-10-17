@@ -1,6 +1,6 @@
 package ru.job4j.threads.sharedresources.immutableobjecs;
 
-public class Node<T> {
+public final class Node<T> {
     private final Node<T> next;
     private final T value;
 
