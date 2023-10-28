@@ -1,4 +1,4 @@
-package ru.job4j.threads.Visibility;
+package ru.job4j.threads.visibility;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
