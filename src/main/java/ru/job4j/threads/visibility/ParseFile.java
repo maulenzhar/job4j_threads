@@ -7,7 +7,7 @@ public final class ParseFile {
     private final File file;
 
     public ParseFile(File file) {
-        synchronized(this) {
+        synchronized (this) {
             this.file = file;
         }
     }
@@ -16,7 +16,8 @@ public final class ParseFile {
         try (InputStream i = new BufferedInputStream(new FileInputStream(file))) {
             String output = "";
             int data;
-            while (content(c -> c > 0, data = i.read())) {
+            data = i.read();
+            while (content(c -> c > 0, data)) {
                 output += (char) data;
             }
             return output;
@@ -27,7 +28,8 @@ public final class ParseFile {
         try (InputStream i = new BufferedInputStream(new FileInputStream(file))) {
         String output = "";
         int data;
-        while (content(c -> c > 0, data = i.read())) {
+        data = i.read();
+        while (content(c -> c > 0, data)) {
             if (data < 0x80) {
                 output += (char) data;
             }

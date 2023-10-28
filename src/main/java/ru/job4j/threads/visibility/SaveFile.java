@@ -9,7 +9,7 @@ public class SaveFile {
     private final File file;
 
     public SaveFile(File file) {
-        synchronized(this) {
+        synchronized (this) {
             this.file = file;
         }
     }
