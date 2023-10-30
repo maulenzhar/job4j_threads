@@ -7,6 +7,7 @@ public final class ParseFile {
     private final File file;
     private Predicate<Integer> pred = c -> c > 0;
     private int data;
+
     public ParseFile(File file) {
         synchronized (this) {
             this.file = file;
