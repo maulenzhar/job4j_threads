@@ -5,7 +5,6 @@ import java.util.function.Predicate;
 
 public final class ParseFile {
     private final File file;
-    private Predicate<Integer> pred = c -> c > 0;
     private int data;
 
     public ParseFile(File file) {
@@ -14,27 +13,13 @@ public final class ParseFile {
         }
     }
 
-    public synchronized String getContent() throws IOException {
-        try (InputStream i = new BufferedInputStream(new FileInputStream(file))) {
-            String output = "";
-            data = i.read();
-            while (content(pred)) {
-                output += (char) data;
-                data = i.read();
-            }
-            return output;
-        }
-    }
-
-    public synchronized String getContentWithoutUnicode() {
+    public synchronized String getContent() {
         try (InputStream i = new BufferedInputStream(new FileInputStream(file))) {
         String output = "";
         data = i.read();
-        while (content(pred)) {
-            if (content(c -> c < 0x80)) {
-                output += (char) data;
-                data = i.read();
-            }
+        while (content(c -> c > 0) || (content(c -> c < 0x80) && data != -1)) {
+            output += (char) data;
+            data = i.read();
         }
         return output;
 
@@ -45,11 +30,5 @@ public final class ParseFile {
 
     public boolean content(Predicate<Integer> filter) {
         return filter.test(data);
-    }
-
-    public static void main(String[] args) throws IOException {
-        ParseFile parseFile = new ParseFile(new File("/Users/maulen/Documents/1.Projects/projects/job4j_design2/log.txt"));
-        System.out.println(parseFile.getContent());
-        System.out.println(parseFile.getContentWithoutUnicode());
     }
 }
