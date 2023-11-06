@@ -5,30 +5,32 @@ import java.util.function.Predicate;
 
 public final class ParseFile {
     private final File file;
-    private int data;
 
     public ParseFile(File file) {
-        synchronized (this) {
-            this.file = file;
-        }
+        this.file = file;
     }
 
-    public synchronized String getContent() {
+    public synchronized String getContent(Predicate<Integer> predicate) {
+        StringBuilder output = new StringBuilder();
         try (InputStream i = new BufferedInputStream(new FileInputStream(file))) {
-        String output = "";
-        data = i.read();
-        while (content(c -> c > 0) || (content(c -> c < 0x80) && data != -1)) {
-            output += (char) data;
-            data = i.read();
-        }
-        return output;
-
+            int data;
+            while ((data = i.read()) != 0) {
+                if (predicate.test(data)) {
+                    output.append(data);
+                }
+            }
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            e.printStackTrace();
         }
+        return output.toString();
     }
 
-    public boolean content(Predicate<Integer> filter) {
-        return filter.test(data);
+    public String getContentWithoutUnicode() throws IOException {
+        return getContent(data -> data < 0x80);
     }
+
+    public String getAllContent() throws IOException {
+        return getContent(data -> true);
+    }
+
 }
