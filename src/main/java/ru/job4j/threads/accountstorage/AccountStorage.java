@@ -12,36 +12,26 @@ public class AccountStorage {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-        boolean res = false;
-        if (account != null) {
-            accounts.put(account.id(), account);
-            res = true;
-        }
-        return res;
+        return accounts.putIfAbsent(account.id(), account) != null ? true : false;
     }
 
     public boolean update(Account account) {
-        return add(account);
+        return accounts.replace(account.id(), account) != null ? true : false;
     }
 
     public synchronized void delete(int id) {
-        Optional<Account> acc = getById(id);
-        if (acc.isPresent()) {
-            accounts.remove(acc.get().id());
-        }
+        accounts.remove(getById(id).get().id());
     }
 
     public synchronized Optional<Account> getById(int id) {
-        return accounts.values().stream()
-                .filter(e -> e.id() == id)
-                .findFirst();
+        return Optional.ofNullable(accounts.get(id));
     }
 
     public boolean transfer(int fromId, int toId, int amount) {
         boolean rsl = false;
-        Account accountSrc = getById(fromId).get();
-        Account accountDst = getById(toId).get();
-        if (accountSrc != null && accountDst != null && accountSrc.amount() >= amount) {
+        Account accountSrc = Optional.ofNullable(getById(fromId).get()).get();
+        Account accountDst = Optional.ofNullable(getById(toId).get()).get();
+        if (accountSrc.amount() >= amount) {
             update(new Account(accountDst.id(), accountDst.amount() + amount));
             update(new Account(accountSrc.id(), accountSrc.amount() - amount));
             rsl = true;
