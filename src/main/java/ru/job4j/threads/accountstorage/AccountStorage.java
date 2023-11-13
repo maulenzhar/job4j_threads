@@ -29,8 +29,8 @@ public class AccountStorage {
 
     public boolean transfer(int fromId, int toId, int amount) {
         boolean rsl = false;
-        Optional<Account> accountSrc = Optional.ofNullable(getById(fromId)).get();
-        Optional<Account> accountDst = Optional.ofNullable(getById(toId)).get();
+        Optional<Account> accountSrc = getById(fromId);
+        Optional<Account> accountDst = getById(toId);
         if (accountSrc.isPresent() && accountDst.isPresent() && accountSrc.get().amount() >= amount) {
             update(new Account(accountDst.get().id(), accountDst.get().amount() + amount));
             update(new Account(accountSrc.get().id(), accountSrc.get().amount() - amount));
