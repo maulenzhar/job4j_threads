@@ -17,7 +17,7 @@ public class Main {
                     () -> {
                         try {
                             Integer poll = simpleBlockingQueue.poll();
-                            System.out.println(Thread.currentThread().getName() + " poll: " + poll );
+                            System.out.println(Thread.currentThread().getName() + " poll: " + poll);
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
