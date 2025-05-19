@@ -1,4 +1,4 @@
-package ru.job4j.threads.waitnotifyall.wait.hw;
+package ru.job4j.threads.waitnotifyall.wait.hw.barrier;
 
 public class Main {
     public static void main(String[] args) {
