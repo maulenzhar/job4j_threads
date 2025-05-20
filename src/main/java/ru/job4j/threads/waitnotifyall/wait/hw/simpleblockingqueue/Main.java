@@ -7,9 +7,13 @@ public class Main {
         try {
             Thread producer = new Thread(
                     () -> {
-                        int value1 = 12;
-                        simpleBlockingQueue.offer(value1);
-                        System.out.println(Thread.currentThread().getName() + " offered: " + value1);
+                        try {
+                            int value1 = 12;
+                            simpleBlockingQueue.offer(value1);
+                            System.out.println(Thread.currentThread().getName() + " offered: " + value1);
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        }
                     },
                     "producer"
             );

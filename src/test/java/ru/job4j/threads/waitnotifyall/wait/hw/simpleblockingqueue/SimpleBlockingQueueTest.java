@@ -12,9 +12,13 @@ class SimpleBlockingQueueTest {
         final int[] result = new int[1];
 
         Thread producer = new Thread(() -> {
-            System.out.println("Producer started");
-            queue.offer(42);
-            System.out.println("Producer finished");
+            try {
+                System.out.println("Producer started");
+                queue.offer(42);
+                System.out.println("Producer finished");
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         });
 
         Thread consumer = new Thread(() -> {

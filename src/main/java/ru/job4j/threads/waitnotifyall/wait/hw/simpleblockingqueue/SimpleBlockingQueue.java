@@ -14,28 +14,20 @@ public class SimpleBlockingQueue<T> {
 
     private final int total;
 
-    private int count = 0;
-
     public SimpleBlockingQueue(final int total) {
         this.total = total;
     }
 
-    public synchronized void offer(T value) {
-        while (!queue.isEmpty()) {
-            while (count == total) {
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-            }
+    public synchronized void offer(T value) throws InterruptedException {
+        while (queue.size() == total) {
+            this.wait();
         }
         queue.offer(value);
         this.notify();
     }
 
     public synchronized T poll() throws InterruptedException {
-        while (queue.isEmpty()) {
+        while (queue.size() == total) {
             this.wait();
         }
         T val = queue.poll();
