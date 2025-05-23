@@ -51,8 +51,7 @@ class SimpleBlockingQueueTest {
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(2);
         Thread producer = new Thread(
                 () -> {
-                    IntStream.range(0, 5).forEach(e ->
-                            {
+                    IntStream.range(0, 5).forEach(e -> {
                                 try {
                                     queue.offer(e);
                                 } catch (InterruptedException ex) {
