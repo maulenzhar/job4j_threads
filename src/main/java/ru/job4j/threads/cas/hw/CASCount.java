@@ -28,5 +28,4 @@ public class CASCount {
         }
         return ref;
     }
-
 }
