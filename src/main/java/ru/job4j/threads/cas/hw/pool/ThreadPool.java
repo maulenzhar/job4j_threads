@@ -7,13 +7,16 @@ import java.util.List;
 
 public class ThreadPool {
 
-    private List<Thread> threads = null;
-    private SimpleBlockingQueue<Runnable> tasks = null;
+    private final List<Thread> threads;
+    private final SimpleBlockingQueue<Runnable> tasks;
 
     public ThreadPool(int size) {
         threads = new LinkedList<>();
         tasks = new SimpleBlockingQueue<>(size);
+        init(size);
+    }
 
+    private void init(int size) {
         for (int i = 0; i < size; i++) {
             threads.add(new Thread(() -> {
                         try {
