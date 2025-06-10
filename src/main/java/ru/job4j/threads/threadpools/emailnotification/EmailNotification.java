@@ -1,4 +1,4 @@
-package ru.job4j.threads.cas.hw.emailnotification;
+package ru.job4j.threads.threadpools.emailnotification;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

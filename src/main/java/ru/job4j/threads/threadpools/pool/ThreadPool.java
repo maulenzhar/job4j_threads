@@ -1,4 +1,4 @@
-package ru.job4j.threads.cas.hw.pool;
+package ru.job4j.threads.threadpools.pool;
 
 import ru.job4j.threads.waitnotifyall.wait.hw.simpleblockingqueue.SimpleBlockingQueue;
 

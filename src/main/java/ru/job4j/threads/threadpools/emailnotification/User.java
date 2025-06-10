@@ -1,4 +1,4 @@
-package ru.job4j.threads.cas.hw.emailnotification;
+package ru.job4j.threads.threadpools.emailnotification;
 
 public class User {
     private String username;
