@@ -24,7 +24,7 @@ public class ParallelFindIndex<T> extends RecursiveTask<Integer> {
 
         if (array.length <= 10) {
             for (int i = from; i <= to; i++) {
-                if ( array[i].equals(obj)) {
+                if (array[i].equals(obj)) {
                     System.out.printf("Found '%s' at index %d in thread %s%n", obj, i, Thread.currentThread().getName());
                     return i;
                 }
