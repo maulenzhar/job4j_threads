@@ -3,16 +3,13 @@ package ru.job4j.threads.threadpools.forkjoinpool.hw;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
 import static ru.job4j.threads.threadpools.forkjoinpool.hw.ParallelFindIndex.run;
 
 class ParallelFindIndexTest {
 
     @Test
     public void whenStringTypAndMoreThan10() {
-        String[] words = {"alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "kappa1", "kappa23",};
+        String[] words = {"alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "kappa1", "kappa23"};
         String target = "kappa23";
 
         Integer res = run(words, 0, words.length - 1, target);
